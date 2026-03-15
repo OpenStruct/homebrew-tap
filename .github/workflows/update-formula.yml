@@ -1,0 +1,49 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update dx-tools formula
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          SHA256="${{ github.event.client_payload.sha256 }}"
+          URL="${{ github.event.client_payload.url }}"
+          
+          cat > Formula/dx-tools.rb << EOF
+          class DxTools < Formula
+            desc "23 developer tools in one CLI — JSON, JWT, ports, hashing, base64, UUID & more"
+            homepage "https://openstruct.github.io/dx-tools/"
+            url "$URL"
+            sha256 "$SHA256"
+            license "MIT"
+            head "https://github.com/OpenStruct/dx-tools.git", branch: "main"
+
+            depends_on xcode: ["15.0", :build]
+            depends_on :macos
+
+            def install
+              system "swift", "build", "-c", "release", "--disable-sandbox"
+              bin.install ".build/release/dx"
+            end
+
+            test do
+              assert_match "dx", shell_output("#{bin}/dx --help")
+              assert_match(/[0-9a-f]{8}-/, shell_output("#{bin}/dx uuid"))
+            end
+          end
+          EOF
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/dx-tools.rb
+          git commit -m "Update dx-tools to v${{ github.event.client_payload.version }}"
+          git push
