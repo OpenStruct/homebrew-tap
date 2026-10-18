@@ -7,6 +7,7 @@ Custom Homebrew formulae by [OpenStruct](https://github.com/OpenStruct).
 ```bash
 brew tap openstruct/tap
 brew install dx-tools
+brew install mac-disk-cleaner
 ```
 
 ## Available Formulae
@@ -14,6 +15,7 @@ brew install dx-tools
 | Formula | Description |
 |---------|-------------|
 | `dx-tools` | 23 developer tools in one CLI — JSON, JWT, ports, hashing, base64, UUID & more |
+| `mac-disk-cleaner` | Find and safely delete what's filling your Mac's disk — caches, Xcode, node_modules, Docker |
 
 ## Usage
 
@@ -29,3 +31,5 @@ dx uuid
 
 - [DX Tools Website](https://openstruct.github.io/dx-tools/)
 - [DX Tools Repo](https://github.com/OpenStruct/dx-tools)
+- [Mac Disk Cleaner Website](https://openstruct.github.io/mac-disk-cleaner/)
+- [Mac Disk Cleaner Repo](https://github.com/OpenStruct/mac-disk-cleaner)
